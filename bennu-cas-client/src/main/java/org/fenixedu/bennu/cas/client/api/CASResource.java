@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
@@ -77,6 +78,8 @@ public class CASResource {
             User user = getUser(username);
             Authenticate.login(request, response, user);
             logger.trace("Logged in user {}, redirecting to {}", username, actualCallback);
+
+            actualCallback = URLEncoder.encode(actualCallback, "UTF-8");
         } catch (TicketValidationException | AuthorizationException e) {
             logger.debug(e.getMessage(), e);
             // Append the login_failed parameter to the callback
